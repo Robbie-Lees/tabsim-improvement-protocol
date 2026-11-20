@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools >= 64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tabsim-sbi"
+version = "0.1.0"
+description = "Non-Gaussian enhancements to tab-sim and score-compressed simulation-based inference for RFI-affected calibration."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    # tab-sim is imported, never modified. 0.1.0 provides the float64 device
+    # Airy beam (tabsim.jax.beam.j1) and the RFI kernels the parity tests use.
+    "tabsim>=0.1.0",
+    "jax>=0.4.31",  # lax.map(batch_size=...)
+    "numpy",
+    "scipy",
+]
+
+[project.optional-dependencies]
+zarr = ["xarray", "zarr<3.0.0"]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: end-to-end runs (deselect with -m 'not slow')"]
